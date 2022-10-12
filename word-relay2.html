@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>끝말잇기 게임</title>
+  </head>
+
+  <body>
+    <div><span id="order">1</span>번째 참가자</div>
+    <div>제시어: <span id="word"></span></div>
+    <!-- 가져오고 싶은 값은 아이디에 넣어주기 -->
+    <input type="text" />
+    <button>입력</button>
+
+    <script>
+      const number = parseInt(prompt('몇 명이 참가하나요?'), 10); //참가자 수 입력
+      const $button = document.querySelector('button');
+      const $input = document.querySelector('input');
+      const $word = document.querySelector('#word'); //제시어 선택
+      const $order = document.querySelector('#order');
+
+      let word; //제시어를 저장할 변수
+      let newWord; //새로 입력한 단어
+
+      const onClick = function () {
+        //입력 버튼 누르면
+        if (!word) {
+          //제시어가 비어있는가(=없는가)?
+          //비어있다
+          word = newWord; //새로 입력한 단어가 제시어가 됨 //데이터를 바꿔준 후에는 화면도 바꿔줘야 함
+          $word.textContent = word; //화면에 제시어 표시
+          //(화면)span의 값(12번)을 넣어줌-> //제시어를 입력하면 제시어 : word가 뜬다
+          $input.value = ''; //(화면)입력 후, 입력창이 빈칸이 된다
+          //input(입력값)은 안에 들어있는 값이 value //span은 안에 들어있는 값이 textContent
+          $input.focus(); //input창에 커서가 깜빡거림
+          const order = parseInt($order.textContent); //현재 순서
+          //textContent는 문자열이 디폴트이므로 praseInt를 사용하여 숫자로 변경(~번째 참가자)
+          //이 값은 잠시 변수에 저장한다
+          if (order + 1 > number) {
+            //현재순서 판단
+            $order.textContent = 1; //여기서 1은 문자열로 변환됨
+          } else {
+            $order.textContent = order + 1;
+          } //판단에 따른 결과
+        } else {
+          //비어있지 않다.
+          if (word[word.length - 1] === newWord[0]) {
+            //입력한 단어가 올바른가? ->제시어의 끝글자와 새로운 단어의 첫글자가 같아야 함.
+            //제시어의 끝부분 = 새로운 단어의 첫부분
+            //올바르면 입력한 값이 제시어가 됨
+            word = newWord;
+            $word.textContent = word;
+            $input.value = '';
+            $input.focus();
+
+            const order = parseInt($order.textContent);
+            //다음사람에게 순서를 넘긴다 부분은 아니오를 거쳐서도 나오므로 비어있지 않은 경우에도 적어줘야 함
+            if (order + 1 > number) {
+              $order.textContent = 1;
+            } else {
+              $order.textContent = order + 1;
+            }
+          } else {
+            //단어가 올바르지 않은가
+            alert('올바르지 않은 단어입니다.')
+            $input.value = '';
+            $input.focus();
+          }
+        }
+      };
+      const onInput = function (event) {
+        //키보드를 칠때마다
+        newWord = event.target.value; //키보드를 칠때마다 글자가 변수(=새로 입력한 단어)에 저장. 사용자가 입력한 값이 보인다
+      };
+
+      $input.addEventListener('input', onInput);
+      $button.addEventListener('click', onClick);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>쿵쿵따 게임</title>
+  </head>
+  <body>
+    <div><span id="order">1</span>번째 참가자</div>
+    <div>제시어 : <span id="word"></span></div>
+    <input type="text" />
+    <button>입력</button>
+
+    <script>
+      //입력창 만들기
+      const number = parseInt(prompt('쿵쿵따 게임에 몇명이 참여하나요?'), 10); //취소 누르면 다음코드 실행X
+      if (number) {
+        //number가 true면 ->스크립트 마지막 부분
+
+        const $input = document.querySelector('input');
+        const $button = document.querySelector('button');
+        const $word = document.querySelector('#word');
+        const $order = document.querySelector('#order');
+        let word; //제시어
+        let newWord; //새로운 단어
+
+        const onClick = () => {
+          //버튼 클릭시 함수 실행
+          if (
+            newWord.length === 3 &&
+            (!word || word[word.length - 1] === newWord[0])
+          ) {
+            //제시어가 비어있을 때
+            word = newWord; //새로운 단어가 제시어가 됨
+            $word.textContent = word; //화면에 제시어 가져오기
+            const order = parseInt($order.textContent); //textContent는 문자열이므로 숫자로 바꿔줌
+            if (order + 1 > number) {
+              //현재순서+1이 number보다 크다면
+              $order.textContent = 1; //순서가 다시 1로(태그 내부 값을 바꿔줘야 하므로 textContent)
+            } else {
+              //현재 순서+1이 number보다 작으면
+              $order.textContent = order + 1; //현재순서+1
+            }
+          } else {
+            //새로운 단어가 올바르지 않다면
+            alert('올바르지 않은 단어입니다.');
+            //틀렸다고 표시
+          }
+          $input.value = ''; //글자 입력 후 입력창을 비워준다
+          $input.focus(); //글자 입력 후 커서 깜빡거림
+        };
+
+        const onInput = (event) => {
+          //input에 입력한 단어를 현재 단어로
+          //console.log('글자입력', event.target.value);
+          //입력할 수 있는 단어는 세글자
+          newWord = event.target.value; //글자 입력시 새로운 단어에 저장됨
+        };
+        $button.addEventListener('click', onClick);
+        $input.addEventListener('input', onInput); //글자 입력시 함수 실행
+      }
+    </script>
+  </body>
+</html>
