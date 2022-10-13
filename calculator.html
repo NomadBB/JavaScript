@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>계산기</title>
+  <style>
+    * { box-sizing: border-box } /* 너비(가로*세로)를 border를 기준으로 세어줌 */
+    #result { width: 180px; height: 50px; margin: 5px; text-align: right } /* 숫자는 오른쪽에 표시 */
+    #operator { width: 50px; height: 50px; margin: 5px; text-align: center } /* 연산자는 따로 중간에 */
+    button { width: 50px; height: 50px; margin: 5px }
+  </style>
+</head>
+
+<!-- 계산기 버튼 구현 -->
+<body>
+  <input readonly id="operator"> <!-- readonly는 input이지만 글자를 쓸 수 없음(자스에선 가능) -->
+  <input readonly type="number" id="result"> 
+  <div class="row">
+    <button id="num-7">7</button> <!-- number에 아이디를 달아서 자바스크립트가 선택할 수 있도록 -->
+    <button id="num-8">8</button>
+    <button id="num-9">9</button>
+    <button id="plus">+</button>
+  </div>
+  <div class="row">
+    <button id="num-4">4</button> 
+    <button id="num-5">5</button>
+    <button id="num-6">6</button>
+    <button id="minus">-</button>
+  </div>
+  <div class="row">
+    <button id="num-1">1</button>
+    <button id="num-2">2</button>
+    <button id="num-3">3</button>
+    <button id="divide">/</button>
+  </div>
+  <div class="row">
+    <button id="clear">C</button>
+    <button id="num-0">0</button>
+    <button id="calculate">=</button>
+    <button id="multiply">x</button>
+  </div>
+
+  <script>
+    let numOne = '';
+    let operator = '';
+    let numTwo = '';
+    const $operator = document.querySelector('#operator'); //태그 선택
+    const $result = document.querySelector('#result');
+    const $onClickNumber = (number) => (event) => { //event.target.value;
+      if (operator) { //operator은 빈문자열이므로 false //비어있지 않다
+        numTwo += number; 
+      } else { //비어있다
+        numOne += number; //JS의 데이터 뿐만 아니라 화면도 바꿔줘야 함
+    }
+        $result.value += number; //화면 바꾸기
+    }; //고차함수(high order function)-함수가 함수를 return한다.
+
+    document.querySelector('#num-0').addEventListener('click', $onClickNumber('0')); //addEventListner이라는 함수를 호출한것
+    document.querySelector('#num-1').addEventListener('click', $onClickNumber('1'));
+    document.querySelector('#num-2').addEventListener('click', $onClickNumber('2'));
+    document.querySelector('#num-3').addEventListener('click', $onClickNumber('3'));
+    document.querySelector('#num-4').addEventListener('click', $onClickNumber('4'));
+    document.querySelector('#num-5').addEventListener('click', $onClickNumber('5'));
+    document.querySelector('#num-6').addEventListener('click', $onClickNumber('6'));
+    document.querySelector('#num-7').addEventListener('click', $onClickNumber('7'));
+    document.querySelector('#num-8').addEventListener('click', $onClickNumber('8'));
+    document.querySelector('#num-9').addEventListener('click', $onClickNumber('9'));
+
+    const a = (event) => {console.log(event.target.value)};
+    document.querySelector('#plus').addEventListener('click', a); //함수자리에 함수 a 넣음
+    /* 클릭시 브라우저가 함수 a를 호출시켜줌과 동시에 
+    event라는 객체를 만들어 인수로 넣어주고 이 인수가 매개변수로 전달됨 */
+    a(event); //event는 인수
+
+    document.querySelector('#minus').addEventListener('click', () => {});
+    document.querySelector('#multiply').addEventListener('click', () => {});
+    document.querySelector('#divide').addEventListener('click', () => {});
+    document.querySelector('#calculate').addEventListener('click', () => {});
+    document.querySelector('#clear').addEventListener('click', () => {});
+  </script>
+  </body>
+</html>
